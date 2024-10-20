@@ -1,4 +1,15 @@
-// schemaTypes/index.ts
-import {page} from './page'
+import { homePage } from './homePage';
+import { aboutPage } from './aboutPage';
+import { servicesPage } from './servicesPage';
+import { blogPage } from './blogPage';
+import { blogPost } from './blogPost';
+import { contactPage } from './contactPage';
 
-export const schemaTypes = [page]
+export const schemaTypes = [
+  homePage,
+  aboutPage,
+  servicesPage,
+  blogPage,
+  blogPost,
+  contactPage,
+];

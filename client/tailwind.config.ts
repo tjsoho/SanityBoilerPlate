@@ -7,16 +7,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'brand-cream': '#FFE7C3',
-        'brand-logo': '#C1FF72',
-        'brand-green': '#00BF63',
-        'brand-green-light': '#7ED957',
-        'brand-green-dark': '#004B27',
-        'brand-orange': '#FF914D',
-        'brand-orange-light': '#FFBD59',
-        'brand-orange-dark': '#572700',
-        'brand-yellow': '#FFD874',
-        
+        // Neutral Colour Palette
+        'brand-cream': '#F5E9D7',    // Light cream
+        'brand-tan': '#D2B49C',      // Tan
+        'brand-mocha': '#9C6D57',    // Mocha
+        'brand-charcoal': '#4A4A4A', // Charcoal
+        'brand-white': '#FFFFFF',    // White
+        'brand-offwhite': '#F7F7F2', // Slightly off-white
+
+        // Additional shades
+        'brand-light-tan': '#E3D5C2', // Light tan
+        'brand-dark-mocha': '#7B4D3A', // Dark mocha
+        'brand-deep-charcoal': '#333333', // Deeper charcoal
       },
       fontFamily: {
         'Archivo': ['Archivo Black', 'sans-serif'],
