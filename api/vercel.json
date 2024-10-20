@@ -1,10 +1,16 @@
 {
     "version": 2,
     "builds": [
-      { "src": "sanity.config.ts", "use": "@vercel/static-build" }
+      {
+        "src": "dist/**/*",
+        "use": "@vercel/static"
+      }
     ],
     "routes": [
-      { "src": "/(.*)", "dest": "/index.html" }
+      {
+        "src": "/(.*)",
+        "dest": "/index.html"
+      }
     ]
   }
   
