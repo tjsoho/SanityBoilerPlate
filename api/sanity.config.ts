@@ -6,6 +6,7 @@ export default defineConfig({
   title: 'SanityBoilerPlate',
   projectId: '2hcufetx',
   dataset: 'production',
+  basePath: '/', // Serve from the root since we're mapping admin.domain.com.au
   schema: {
     types: schemaTypes,
   },
