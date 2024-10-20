@@ -6,7 +6,6 @@ export default defineConfig({
   title: 'SanityBoilerPlate',
   projectId: '2hcufetx',
   dataset: 'production',
-  basePath: '/admin', // This sets the Studio to be served at /admin
   schema: {
     types: schemaTypes,
   },
