@@ -2,13 +2,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
-// This handler receives the webhook request from Sanity and triggers ISR.
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const secret = searchParams.get('secret');
-  const path = searchParams.get('path'); // Get the path to revalidate
+// Handle POST request to trigger ISR revalidation
+export async function POST(req: NextRequest) {
+  const { secret, path } = await req.json(); // Extract from the request body
 
-  // Validate the secret token for security
+  // Validate the secret token
   if (secret !== process.env.REVALIDATION_SECRET) {
     return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
   }
@@ -18,8 +16,8 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // Use Next.js built-in revalidate function
-    await revalidatePath(path);
+    // Revalidate the specified path
+    await fetch(`${process.env.VERCEL_URL}${path}`, { method: 'GET' });
     return NextResponse.json({ revalidated: true });
   } catch (err) {
     if (err instanceof Error) {
@@ -27,18 +25,11 @@ export async function GET(req: NextRequest) {
         { message: 'Error revalidating', error: err.message },
         { status: 500 }
       );
+    } else {
+      return NextResponse.json(
+        { message: 'Error revalidating', error: 'An unknown error occurred' },
+        { status: 500 }
+      );
     }
-    return NextResponse.json(
-      { message: 'Error revalidating', error: 'Unknown error occurred' },
-      { status: 500 }
-    );
   }
 }
-
-// Helper function for revalidating a path using the production URL
-async function revalidatePath(path: string) {
-    const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000'; // Use Vercel URL in production
-    await fetch(`${baseUrl}${path}`, {
-      method: 'GET',
-    });
-  }
