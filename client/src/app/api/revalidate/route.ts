@@ -35,9 +35,10 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// Helper function for revalidating a path using Next.js API
+// Helper function for revalidating a path using the production URL
 async function revalidatePath(path: string) {
-  await fetch(`http://localhost:3000${path}`, {
-    method: 'GET',
-  });
-}
+    const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000'; // Use Vercel URL in production
+    await fetch(`${baseUrl}${path}`, {
+      method: 'GET',
+    });
+  }
