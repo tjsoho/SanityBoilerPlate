@@ -1,6 +1,7 @@
 // src/app/api/revalidate/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 // Handle POST request to trigger ISR revalidation
 export async function POST(req: NextRequest) {
@@ -17,7 +18,7 @@ export async function POST(req: NextRequest) {
 
   try {
     // Revalidate the specified path
-    await fetch(`${process.env.VERCEL_URL}${path}`, { method: 'GET' });
+    revalidatePath(path);
     return NextResponse.json({ revalidated: true });
   } catch (err) {
     if (err instanceof Error) {
