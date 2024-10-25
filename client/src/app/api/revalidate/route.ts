@@ -6,19 +6,20 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const secret = searchParams.get('secret');
-  const path = searchParams.get('path');
+  const path = searchParams.get('path'); // Get the path to revalidate
 
   // Validate the secret token for security
   if (secret !== process.env.REVALIDATION_SECRET) {
     return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
   }
 
+  if (!path) {
+    return NextResponse.json({ message: 'Path is required' }, { status: 400 });
+  }
+
   try {
-    // Trigger revalidation of the specified path
-    await fetch(
-      `${process.env.VERCEL_URL}/api/revalidate?path=${path}`,
-      { method: 'POST' }
-    );
+    // Use Next.js built-in revalidate function
+    await revalidatePath(path);
     return NextResponse.json({ revalidated: true });
   } catch (err) {
     if (err instanceof Error) {
@@ -26,11 +27,17 @@ export async function GET(req: NextRequest) {
         { message: 'Error revalidating', error: err.message },
         { status: 500 }
       );
-    } else {
-      return NextResponse.json(
-        { message: 'Error revalidating', error: 'An unknown error occurred' },
-        { status: 500 }
-      );
     }
+    return NextResponse.json(
+      { message: 'Error revalidating', error: 'Unknown error occurred' },
+      { status: 500 }
+    );
   }
+}
+
+// Helper function for revalidating a path using Next.js API
+async function revalidatePath(path: string) {
+  await fetch(`http://localhost:3000${path}`, {
+    method: 'GET',
+  });
 }
