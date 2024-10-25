@@ -18,8 +18,15 @@ export async function POST(req: NextRequest) {
 
   try {
     // Revalidate the specified path
-    revalidatePath(path);
-    return NextResponse.json({ revalidated: true });
+    const result = handleRevalidation(path);
+    if (result == true) {
+      return NextResponse.json({ revalidated: true });
+    } else {
+      return NextResponse.json(
+        { message: `Could not revalidate ${path}` },
+        { status: 400 }
+      );
+    }
   } catch (err) {
     if (err instanceof Error) {
       return NextResponse.json(
@@ -34,3 +41,21 @@ export async function POST(req: NextRequest) {
     }
   }
 }
+
+function handleRevalidation(documentType: string) {
+  switch (documentType) {
+    case "homePage":
+      revalidatePath("/");
+      return true;
+
+    case "aboutPage":
+      revalidatePath("/about");
+      return true;
+
+    default: {
+      console.error(`Invalid _type: ${documentType}`);
+      return true;
+    }
+  }
+}
+
